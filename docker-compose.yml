@@ -3,6 +3,7 @@ services:
 
     nginx:
         image: nginx:latest
+        container_name: certginx_nginx
         restart: unless-stopped
         volumes:
             - ./nginx/conf.d:/etc/nginx/conf.d
@@ -15,6 +16,7 @@ services:
 
     certbot:
         image: certbot/certbot:latest
+        container_name: certginx_certbot
         restart: unless-stopped
         volumes:
             - ./certbot/conf:/etc/letsencrypt
