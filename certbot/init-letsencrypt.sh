@@ -17,18 +17,18 @@ BACKUP_PATH="${SCRIPT_PATH}/.backups/$(date '+%Y%m%d%H%M%S')"
 CONFIG_PATH="${SCRIPT_PATH}/conf"
 
 function ERROR () {
-    echo -e "\033[0;31m\033[1m!! $1 !! \033[0m\n"
-    local f="${CONFIG_PATH}/archive/${DOMAINS}/ ${CONFIG_PATH}/live/${DOMAINS}/ ${CONFIG_PATH}/renewal/${DOMAINS}.conf"
-    [ $(ls -ld ${CONFIG_PATH}/live | wc -l) -ne $((( $(ls -l ${CONFIG_PATH}/csr | wc -l) -1 ))) ] \
-        && local f="$f ${CONFIG_PATH}/csr/$(ls -l ${CONFIG_PATH}/csr | tail -n 1 | awk '{print $9}')" \
-        && local f="$f ${CONFIG_PATH}/keys/$(ls -l ${CONFIG_PATH}/keys | tail -n 1 | awk '{print $9}')"
-    mkdir -p ${BACKUP_PATH}
-    for _f in $f; do
-        mkdir -p ${BACKUP_PATH}/$(echo ${_f:${#CONFIG_PATH}} | awk -F / '{print $2}') \
-            && cp -pur ${_f} ${BACKUP_PATH}/$(echo ${_f:${#CONFIG_PATH}} | awk -F / '{print $2}') 2> /dev/null \
-            && rm -rf ${_f} 2> /dev/null
-    done
-    exit 1
+  echo -e "\033[0;31m\033[1m!! $1 !! \033[0m\n"
+  local f="${CONFIG_PATH}/archive/${DOMAINS}/ ${CONFIG_PATH}/live/${DOMAINS}/ ${CONFIG_PATH}/renewal/${DOMAINS}.conf"
+  [ $(ls -ld ${CONFIG_PATH}/live | wc -l) -ne $((( $(ls -l ${CONFIG_PATH}/csr | wc -l) -1 ))) ] \
+    && local f="$f ${CONFIG_PATH}/csr/$(ls -l ${CONFIG_PATH}/csr | tail -n 1 | awk '{print $9}')" \
+    && local f="$f ${CONFIG_PATH}/keys/$(ls -l ${CONFIG_PATH}/keys | tail -n 1 | awk '{print $9}')"
+  mkdir -p ${BACKUP_PATH}
+  for _f in $f; do
+    mkdir -p ${BACKUP_PATH}/$(echo ${_f:${#CONFIG_PATH}} | awk -F / '{print $2}') \
+      && cp -pur ${_f} ${BACKUP_PATH}/$(echo ${_f:${#CONFIG_PATH}} | awk -F / '{print $2}') 2> /dev/null \
+      && rm -rf ${_f} 2> /dev/null
+  done
+  exit 1
 }
 
 function PRINT () {
