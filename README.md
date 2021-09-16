@@ -32,7 +32,7 @@ Rename `./nginx/conf.d/subdomain.domain.com.conf` with `./nginx/conf.d/<your-dom
 
 ### **Configuring certbot**
 
-Every time you want to add a new domain you need to configure the file below.
+Every time you want to add a new domain. You need to configure the file below.
 
 <table><tr><th>
 ./certbot/init-letsencrypt.sh
@@ -49,7 +49,6 @@ Run the script with `./certbot/init-letsencrypt.sh`.
 ### **Configuring after script**
 
 Update `./nginx/conf.d/<your-domain>.conf` to suit your needs.
-
 
 <table><tr><th>
 ./nginx/conf.d/<your-domain>.conf
