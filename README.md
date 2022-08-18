@@ -134,7 +134,7 @@ server {
 #!/bin/sh
 
 RSA_KEY_SIZE=4096
-DUMMY_NAME="dummy_certificate"
+DUMMY_NAME="dummy-certificate"
 
 # DO NOT CHANGE
 SCRIPT_PATH="$( cd "$(dirname "${0}")" >/dev/null 2>&1 ; pwd -P )"
