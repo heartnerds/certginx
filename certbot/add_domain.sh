@@ -10,26 +10,24 @@ RSA_KEY_SIZE=4096
 
 # DO NOT CHANGE
 SCRIPT_PATH="$( cd "$(dirname "${0}")" >/dev/null 2>&1 ; pwd -P )"
-BACKUP_PATH="${SCRIPT_PATH}/.backups/$(date '+%Y%m%d%H%M%S')"
-CONFIG_PATH="${SCRIPT_PATH}/conf"
 
 ERROR () {
-  echo -e "\033[0;31m\033[1m!! ${1} !! \033[0m\n"
+  echo "\033[0;31m\033[1m!! ${1} !! \033[0m\n"
   exit 1
 }
 
 PRINT () {
-  echo -e "\n > $1"
-}
-
-check_docker_compose () {
-  [ -x "$(command -v docker-compose)" ] || ERROR "docker-compose is not installed"
-  stop_docker
+  echo "\n > $1"
 }
 
 check_confirmation () {
   read -p "Data will be erased for ${DOMAINS}. Continue? (y/N) " decision
   [ "$decision" != "Y" ] && [ "$decision" != "y" ] && exit
+}
+
+check_docker_compose () {
+  [ -x "$(command -v docker compose)" ] || ERROR "docker compose is not installed"
+  stop_docker
 }
 
 create_tls_parameters () {
@@ -43,7 +41,7 @@ create_tls_parameters () {
 create_dummy_certificates () {
   PRINT "Creating dummy certificate for ${DOMAINS} ..."
   mkdir -p "$SCRIPT_PATH/conf/live/${DOMAINS%% *}"
-  docker-compose run --rm --entrypoint "\
+  docker compose run --rm --entrypoint "\
     openssl req -x509 -nodes -newkey rsa:$RSA_KEY_SIZE -days 1\
       -keyout '/etc/letsencrypt/live/${DOMAINS%% *}/privkey.pem' \
       -out '/etc/letsencrypt/live/${DOMAINS%% *}/fullchain.pem' \
@@ -53,14 +51,14 @@ create_dummy_certificates () {
 
 start_nginx () {
   PRINT "Starting nginx ..."
-  docker-compose up --force-recreate -d nginx
+  docker compose up --force-recreate -d nginx
   [ $(docker container inspect -f '{{.State.Running}}' "certginx_nginx") = "true" ] \
     || ERROR "Unbale to start nginx (check your configuration)"
 }
 
 remove_dummy_certificates () {
   PRINT "Deleting dummy certificate for ${DOMAINS} ..."
-  docker-compose run --rm --entrypoint "\
+  docker compose run --rm --entrypoint "\
     rm -Rf /etc/letsencrypt/live/${DOMAINS%% *} && \
     rm -Rf /etc/letsencrypt/archive/${DOMAINS%% *} && \
     rm -Rf /etc/letsencrypt/renewal/${DOMAINS%% *}.conf" certbot \
@@ -81,7 +79,7 @@ request_certificates () {
 
   [ $STAGING != "0" ] && staging_arg="--staging"
 
-  docker-compose run --rm --entrypoint "\
+  docker compose run --rm --entrypoint "\
     certbot certonly --webroot -w /var/www/certbot \
       $staging_arg \
       $email_arg \
@@ -93,8 +91,8 @@ request_certificates () {
 }
 
 stop_docker () {
-  PRINT "Stopping docker-compose ..."
-  docker-compose down
+  PRINT "Stopping docker compose ..."
+  docker compose down
 }
 
 

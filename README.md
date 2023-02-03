@@ -35,7 +35,7 @@ Rename `./nginx/conf.d/subdomain.domain.com.conf` with `./nginx/conf.d/<your-dom
 Every time you want to add a new domain. You need to configure the file below.
 
 <table><tr><th>
-./certbot/init-letsencrypt.sh
+./certbot/add_domain.sh
 </th></tr><tr><td>
 
 Update **DOMAINS** and **EMAIL** variables to begin the installation. If you are testing, put **STAGING** to *1* to avoid hitting request limits.
@@ -44,7 +44,7 @@ Update **DOMAINS** and **EMAIL** variables to begin the installation. If you are
 
 ### **Executing the script**
 
-Run the script with `./certbot/init-letsencrypt.sh`.
+Run the script with `./certbot/add_domain.sh`.
 
 ### **Configuring after script**
 
@@ -128,26 +128,6 @@ server {
 
 </td></tr></table>
 
-*Generate dummy certificate:*
-
-```sh
-#!/bin/sh
-
-RSA_KEY_SIZE=4096
-DUMMY_NAME="dummy-certificate"
-
-# DO NOT CHANGE
-SCRIPT_PATH="$( cd "$(dirname "${0}")" >/dev/null 2>&1 ; pwd -P )"
-
-mkdir -p "$SCRIPT_PATH/conf/live/${DUMMY_NAME}"
-docker-compose run --rm --entrypoint "\
-openssl req -x509 -nodes -newkey rsa:$RSA_KEY_SIZE -days 3650\
-    -keyout '/etc/letsencrypt/live/${DUMMY_NAME}/privkey.pem' \
-    -out '/etc/letsencrypt/live/${DUMMY_NAME}/fullchain.pem' \
-    -subj '/CN=localhost'" certbot \
-|| ERROR "Unable to create dummy certificates"
-```
-
 Catch bad vhost.
 
 <table><tr><th>
@@ -168,4 +148,4 @@ server {
 
 ## **Credits**
 
-- [nginx-certbot](https://github.com/wmnnd/nginx-certbot) the base of the `init-letsencrypt` script.
+- [nginx-certbot](https://github.com/wmnnd/nginx-certbot) the base of the `add_domain` script.
