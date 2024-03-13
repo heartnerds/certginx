@@ -30,21 +30,18 @@ Rename `./nginx/conf.d/subdomain.domain.com.conf` with `./nginx/conf.d/<your-dom
 
 </td></tr></table>
 
-### **Configuring certbot**
-
-Every time you want to add a new domain. You need to configure the file below.
-
-<table><tr><th>
-./certbot/add_domain.sh
-</th></tr><tr><td>
-
-Update **DOMAINS** and **EMAIL** variables to begin the installation. If you are testing, put **STAGING** to *1* to avoid hitting request limits.
-
-</td></tr></table>
-
 ### **Executing the script**
 
-Run the script with `./certbot/add_domain.sh`.
+```
+Usage: ./certginx.sh <command> [options]
+
+Commands:
+    add -d <domains> -e <email>    Add domains with email (-e not required)
+    self-signed -d <name>          Create self signed certificate
+    remove -d <domains>            Remove domains
+    list                           List domains (not self signed)
+    update-tls                     Update TLS parameters
+```
 
 ### **Configuring after script**
 
