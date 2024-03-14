@@ -1,7 +1,5 @@
 #!/bin/bash
 
-RSA_KEY_SIZE=4096
-
 #
 # DO NOT CHANGE THE CODE BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 #
@@ -11,6 +9,7 @@ DOMAINS=""
 MAIL=""
 STAGING=false
 CERTIFICATES_PATH=${CERTIFICATES_PATH:-.certificates}
+RSA_KEY_SIZE=${RSA_KEY_SIZE:-4096}
 
 function ERROR() {
   echo -e "\033[0;31m\033[1m!! ${1} !! \033[0m\n"
